@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-        googleSignInClient = GoogleSignIn.getClient(this.gso)
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
     }
     fun googleLogin(){
         var signInIntent = googleSignInClient?.signInIntent
@@ -57,16 +57,15 @@ class LoginActivity : AppCompatActivity() {
     fun firebaseAuthWithGoogle(account : GoogleSignInAccount?){
         var credential = GoogleAuthProvider.getCredential(account?.idToken, null)
         auth?.signInWithCredential(credential)
-            ?.addOnCompleteListener {
-                    task ->
-                if(task.isSuccessful){
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
                     // Login
                     moveMainPage(task.result?.user)
-                }
-                else{
+                } else {
                     // Show the error message
                     Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
                 }
+            }
 
     }
 
